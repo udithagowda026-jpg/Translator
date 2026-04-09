@@ -1,0 +1,34 @@
+# line1
+## line2
+### line3
+#### line4
+##### line5
+
+import speech_recognition as sr
+from deep_translator import GoogleTranslator
+from gtts import gTTS
+import os
+
+# Step 1: Take voice input
+r = sr.Recognizer()
+with sr.Microphone() as source:
+    print("Speak in English...")
+    audio = r.listen(source)
+
+try:
+    text = r.recognize_google(audio)
+    print("You said:", text)
+
+    # Step 2: Translate to Kannada
+    translated = GoogleTranslator(source='en', target='kn').translate(text)
+    print("Kannada:", translated)
+
+    # Step 3: Convert to voice
+    tts = gTTS(text=translated, lang='kn')
+    tts.save("output.mp3")
+
+    # Step 4: Play audio
+    os.system("start output.mp3")   # for Windows
+
+except Exception as e:
+    print("Error:", e)
